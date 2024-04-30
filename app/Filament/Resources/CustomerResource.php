@@ -7,9 +7,11 @@ use App\Filament\Resources\CustomerResource\RelationManagers;
 use App\Models\categories;
 use App\Models\Customer;
 use App\Models\districts;
+use App\Models\Region;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -37,13 +39,17 @@ class CustomerResource extends Resource
                     ->tel()
                     ->required()
                     ->maxLength(255),
-                Select::make('district_name')
-                    ->label('District')
-                    ->options(districts::all()->pluck('name', 'name')) // Assuming your model is named 'District'
-                    ->searchable(),
-
+                Select::make('region_name')
+                    ->label('Region')->live()->preload()
+                    ->options(Region::all()->pluck('name', 'name')) // Assuming your model is named 'District'
+                    ->searchable()
+                    ->afterStateUpdated(fn(Set $set)=>$set('district_name',null)),
+                Select::make('district_name')->searchable()->label('District')
+                    ->options(fn ($get) => districts::where('region_name', $get('region_name'))
+                        ->pluck('name', 'name'))->live()->preload(),
+//                         ->afterStateUpdated(fn(Set $set)=>$set('region_name',null)),
                 Select::make('category_name')
-                    ->label('Category')
+                    ->label('Category')->required()
                     ->options(categories::all()->pluck('name', 'name'))
                     ->searchable(),
             ]);
@@ -62,6 +68,10 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('district_name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('region_name')
+                    ->numeric()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('category_name')
                     ->numeric()
                     ->sortable(),
@@ -88,7 +98,6 @@ class CustomerResource extends Resource
                 ]),
             ]);
     }
-
     public static function getPages(): array
     {
         return [

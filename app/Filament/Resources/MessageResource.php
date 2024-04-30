@@ -96,6 +96,8 @@ class MessageResource extends Resource
                 Tables\Columns\TextColumn::make('campaign.name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('region_name')
+                    ->searchable()->default('All Region'),
                 Tables\Columns\TextColumn::make('district_name')
                     ->searchable()->default('All District'),
                 Tables\Columns\TextColumn::make('category_name')

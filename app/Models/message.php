@@ -22,11 +22,10 @@ class message extends Model
         'district_name',
         'category_name',
         'status',
-        'is_scheduled',
         'scheduled_date',
         'scheduled_time',
         'timezone',
-        'frequency', // New attribute for frequency
+        'frequency',
     ];
 
     public function campaign()

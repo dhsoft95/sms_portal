@@ -31,9 +31,9 @@ class DistrictsResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Select::make('region_id')
+                Select::make('region_name')
                     ->label('Regions')->required()
-                    ->options(Region::all()->pluck('name', 'id'))
+                    ->options(Region::all()->pluck('name', 'name'))
                     ->searchable()
             ]);
     }
@@ -44,7 +44,7 @@ class DistrictsResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('Region.name')
+                Tables\Columns\TextColumn::make('region_name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

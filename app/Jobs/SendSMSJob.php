@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use AllowDynamicProperties;
 use App\Models\customer;
+use App\Models\campaigns;
 use App\Models\message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,24 +18,38 @@ class SendSMSJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Create a new job instance.
+     * Recipient's phone number.
+     *
+     * @var string
      */
     protected $phone;
+
+    /**
+     * Content of the SMS message.
+     *
+     * @var string
+     */
     protected $messageContent;
-    protected $messageOperation;
+
+    /**
+     * The campaign model instance.
+     *
+     * @var \App\Models\campaigns
+     */
+    protected $campaign;
 
     /**
      * Create a new job instance.
      *
-     * @param string $phone The recipient's phone number
-     * @param string $messageContent The content of the SMS message
-     * @param App\Models\message $messageOperation The message operation model instance
+     * @param string $phone
+     * @param string $messageContent
+     * @param \App\Models\campaigns $campaign
      */
-    public function __construct($phone, $messageContent, message $messageOperation)
+    public function __construct($phone, $messageContent, campaigns $campaign)
     {
         $this->phone = $phone;
         $this->messageContent = $messageContent;
-        $this->messageOperation = $messageOperation;
+        $this->campaign = $campaign;
     }
 
     /**
@@ -47,23 +61,24 @@ class SendSMSJob implements ShouldQueue
     {
         try {
             // Call the sendSMSInvitation method
-            $this->sendSMSInvitation($this->phone, $this->messageContent, $this->messageOperation);
+            $this->sendSMSInvitation($this->phone, $this->messageContent, $this->campaign);
         } catch (\Exception $e) {
             // Log any exceptions
             Log::error("Failed to send SMS to {$this->phone}: " . $e->getMessage());
-            // Update message operation status to 'failed'
-            $this->messageOperation->update(['status' => false]);
+            // Update campaign status to 'failed'
+            $this->campaign->update(['status' => false]);
         }
     }
+
     /**
-     * Method to send SMS invitation
+     * Method to send SMS invitation.
      *
      * @param string $phone
      * @param string $message
-     * @param message $messageOperation
+     * @param \App\Models\campaigns $campaign
      * @return void
      */
-    public static function sendSMSInvitation($phone, $message, $messageOperation)
+    public static function sendSMSInvitation($phone, $message, $campaign)
     {
         $client = new GuzzleClient();
         Log::info('SMS API URL: ' . env('SMS_API_URL'));
@@ -81,14 +96,8 @@ class SendSMSJob implements ShouldQueue
                 'message' => $finalMessage,
             ];
 
-            if (!$messageOperation->district_name) {
-                $messageOperation->district_name = null;
-                $messageOperation->save();
-            }
-            if (!$messageOperation->category_name) {
-                $messageOperation->category_name = null;
-                $messageOperation->save();
-            }
+            // Log request data before sending
+            Log::info('Sending SMS request data: ' . json_encode($requestData));
 
             $response = $client->post(env('SMS_API_URL'), [
                 'headers' => [
@@ -106,18 +115,57 @@ class SendSMSJob implements ShouldQueue
                     $successMessage = json_encode($successMessage);
                 }
                 Log::info("SMS sent to $phone: $successMessage");
-                $messageOperation->update(['status' => true]);
+                $campaign->update(['status' => true]);
+
+                // Log successful SMS operation in the messages table
+                message::create([
+                    'campaign_id' => $campaign->id,
+                    'region_name' => $campaign->region_name,
+                    'district_name' => $campaign->district_name,
+                    'category_name' => $campaign->category_name,
+                    'status' => true,
+                    'scheduled_date' => $campaign->scheduled_date,
+                    'scheduled_time' => $campaign->scheduled_time,
+                    'timezone' => $campaign->timezone,
+                    'frequency' => $campaign->frequency,
+                ]);
             } else {
                 $errorMessage = isset($responseData['message']) ? $responseData['message'] : 'Unknown error';
                 if (is_array($errorMessage)) {
                     $errorMessage = json_encode($errorMessage);
                 }
                 Log::error("Failed to send SMS to $phone: $errorMessage");
-                $messageOperation->update(['status' => false]);
+                $campaign->update(['status' => false]);
+
+                // Log failed SMS operation in the messages table
+                message::create([
+                    'campaign_id' => $campaign->id,
+                    'region_name' => $campaign->region_name,
+                    'district_name' => $campaign->district_name,
+                    'category_name' => $campaign->category_name,
+                    'status' => false,
+                    'scheduled_date' => $campaign->scheduled_date,
+                    'scheduled_time' => $campaign->scheduled_time,
+                    'timezone' => $campaign->timezone,
+                    'frequency' => $campaign->frequency,
+                ]);
             }
         } catch (\Exception $e) {
             Log::error("Failed to send SMS to $phone: " . $e->getMessage());
-            $messageOperation->update(['status' => false]);
+            $campaign->update(['status' => false]);
+
+            // Log exception in the messages table
+            message::create([
+                'campaign_id' => $campaign->id,
+                'region_name' => $campaign->region_name,
+                'district_name' => $campaign->district_name,
+                'category_name' => $campaign->category_name,
+                'status' => false,
+                'scheduled_date' => $campaign->scheduled_date,
+                'scheduled_time' => $campaign->scheduled_time,
+                'timezone' => $campaign->timezone,
+                'frequency' => $campaign->frequency,
+            ]);
         }
     }
 }

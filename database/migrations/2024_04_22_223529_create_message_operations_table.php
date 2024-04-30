@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('message_operations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('campaign_id')->constrained()->onDelete('cascade');
-            $table->string('district_name')->nullable()->default(null); // Allow NULL values for district_id
+            $table->string('region_name')->nullable()->default(null);
+            $table->string('district_name')->nullable()->default(null);
             $table->string('category_name')->nullable()->default(null);
             $table->boolean('status')->default(false);
-            $table->boolean('is_schedules')->default(false);
             $table->date('scheduled_date')->nullable();
             $table->time('scheduled_time')->nullable();
             $table->string('timezone')->nullable();

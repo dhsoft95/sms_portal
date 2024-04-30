@@ -13,18 +13,20 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
-            $table->string('campaign_code')->nullable();
             $table->string('name');
-            $table->unsignedBigInteger('template_id'); // Add template_id column
-            $table->unsignedBigInteger('region_id');
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('district_id');
-            $table->boolean('is_active')->default(false);
+            $table->unsignedBigInteger('template_id');
+            $table->string('region_name')->nullable()->default(null);
+            $table->string('district_name')->nullable()->default(null); // Allow NULL values for district_id
+            $table->string('category_name')->nullable()->default(null);
+            $table->boolean('is_scheduled')->default(false);
+            $table->boolean('status')->default(false);
+            $table->date('scheduled_date')->nullable();
+            $table->time('scheduled_time')->nullable();
+            $table->string('timezone')->nullable();
+            $table->string('frequency')->nullable();
             $table->timestamps();
-
-            // Define foreign key constraint
-//            $table->foreign('template_id')->references('id')->on('sms_templates')->onDelete('cascade');
         });
+
     }
 
     /**

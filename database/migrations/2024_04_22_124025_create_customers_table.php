@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('fname');
             $table->string('lname');
             $table->string('phone')->unique();
-            $table->string('district_name')->nullable();
             $table->string('category_name')->nullable();
+            $table->string('district_name')->nullable();
+            $table->string('region_name')->nullable();
             $table->timestamps();
         });
     }
