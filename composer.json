@@ -10,9 +10,11 @@
         "bezhansalleh/filament-shield": "^3.2",
         "chiiya/filament-access-control": "^2.4",
         "eightynine/filament-excel-import": "^3.0",
+        "elibyy/tcpdf-laravel": "^11.1",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "laraveldaily/laravel-invoices": "^4.0",
         "saade/filament-laravel-log": "^3.0",
         "swisnl/filament-backgrounds": "^1.1",
         "tapp/filament-timezone-field": "^3.0"

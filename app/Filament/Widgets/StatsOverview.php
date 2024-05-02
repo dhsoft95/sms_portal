@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\campaigns;
 use App\Models\customer;
 use App\Models\message;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -13,6 +14,7 @@ class StatsOverview extends BaseWidget
     {
         $send = message::where('status', '=', '1')->count();
         $failed = message::where('status', '=', '0')->count();
+        $schedule=campaigns::where('is_scheduled','=','1')->count();
         $all = customer::count();
         return [
             Stat::make('Total successful messages', $send)
@@ -24,6 +26,10 @@ class StatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-bolt-slash')->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('danger'),
             Stat::make('All customes', $all)
+                ->description('3% increase')->chart([7, 2, 10, 3, 15, 4, 17])
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('info'),
+            Stat::make('Schedule Campaigns',  $schedule)
                 ->description('3% increase')->chart([7, 2, 10, 3, 15, 4, 17])
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),

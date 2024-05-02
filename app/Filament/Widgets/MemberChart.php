@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 class MemberChart extends ChartWidget
 {
     protected static ?string $heading = 'Messages sent  Per Monthly';
-
+    protected static string $color = 'info';
     protected function getData(): array
     {
         $trans=message::query('id','created_at')->get()->groupBy(function ($trans){

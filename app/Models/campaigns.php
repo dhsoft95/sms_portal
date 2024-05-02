@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
-class Campaigns extends Model
+class campaigns extends Model
 {
     use HasFactory;
 

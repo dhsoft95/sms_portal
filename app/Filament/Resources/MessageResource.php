@@ -16,7 +16,11 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
@@ -117,38 +121,68 @@ class MessageResource extends Resource
                         'success' => 1,
                     ]),
 
-
-                Tables\Columns\IconColumn::make('is_scheduled')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('scheduled_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('scheduled_time'),
-                Tables\Columns\TextColumn::make('timezone')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('frequency')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+//                Tables\Actions\Action::make('Download Pdf')
+//                    ->icon('heroicon-o-document-arrow-down')
+//                    ->url(fn (message $record) => route('student.pdf.download', $record))
+//                    ->openUrlInNewTab(),
+//                Tables\Actions\EditAction::make(),
+//                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist|\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
+    {
+        return $infolist
+            ->schema([
+                \Filament\Infolists\Components\Section::make('Message Info')
+                    ->icon('heroicon-m-chat-bubble-left-right')->iconColor('info')
+                    ->footerActionsAlignment(Alignment::Center)
+                    ->schema([
+                        Fieldset::make('')
+                            ->schema([
+                                TextEntry::make('campaign.name')
+                                    ->numeric(),
+                                TextEntry::make('region_name'),
+                                   TextEntry::make('district_name'),
+                            ])->columns(3),
+                        Fieldset::make('')
+                            ->schema([
+                                TextEntry::make('district_name'),
+                                TextEntry::make('category_name'),
+                                IconEntry::make('status')
+                                    ->Icons([
+                                        'heroicon-o-x-circle',
+                                        'heroicon-o-check' => fn ($state, $record): bool => $record->status === null,
+                                        'heroicon-o-arrow-path' => fn ($state): bool => $state === 0,
+                                        'heroicon-o-check-badge' => fn ($state): bool => $state ===1,
+                                    ]) ->colors([
+                                        'secondary',
+                                        'danger' => null,
+                                        'warning' => 0,
+                                        'success' => 1,
+                                    ])
+                            ])->columns(3),
+                        Fieldset::make('')
+                            ->schema([
+                                TextEntry::make('scheduled_time')->time(),
+                                TextEntry::make('timezone'),
+                                TextEntry::make('scheduled_date')->date()
+                            ])->columns(3),
+
+
+
+                    ])
             ]);
     }
 

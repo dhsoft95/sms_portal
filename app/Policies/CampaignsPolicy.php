@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Campaigns;
+use App\Models\campaigns;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CampaignsPolicy
@@ -21,7 +21,7 @@ class CampaignsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Campaigns $campaigns): bool
+    public function view(User $user, campaigns $campaigns): bool
     {
         return $user->can('view_campaigns');
     }
@@ -37,7 +37,7 @@ class CampaignsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Campaigns $campaigns): bool
+    public function update(User $user, campaigns $campaigns): bool
     {
         return $user->can('update_campaigns');
     }
@@ -45,7 +45,7 @@ class CampaignsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Campaigns $campaigns): bool
+    public function delete(User $user, campaigns $campaigns): bool
     {
         return $user->can('delete_campaigns');
     }
@@ -61,7 +61,7 @@ class CampaignsPolicy
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Campaigns $campaigns): bool
+    public function forceDelete(User $user, campaigns $campaigns): bool
     {
         return $user->can('force_delete_campaigns');
     }
@@ -77,7 +77,7 @@ class CampaignsPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Campaigns $campaigns): bool
+    public function restore(User $user, campaigns $campaigns): bool
     {
         return $user->can('restore_campaigns');
     }
@@ -93,7 +93,7 @@ class CampaignsPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Campaigns $campaigns): bool
+    public function replicate(User $user, campaigns $campaigns): bool
     {
         return $user->can('replicate_campaigns');
     }

@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 class SmsChart extends ChartWidget
 {
     protected static ?string $heading = 'Successful Messages sent Per Monthly';
-
+    protected static string $color = 'success';
     protected function getData(): array
     {
         $trans = message::query()

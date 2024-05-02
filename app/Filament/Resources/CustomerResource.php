@@ -12,7 +12,11 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,6 +100,29 @@ class CustomerResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+    public static function infolist(Infolist|\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
+    {
+        return $infolist
+            ->schema([
+                \Filament\Infolists\Components\Section::make('Customers Info')
+                    ->icon('heroicon-m-user')->iconColor('info')
+                    ->footerActionsAlignment(Alignment::Center)
+                    ->schema([
+                        Fieldset::make('')
+                            ->schema([
+                                TextEntry::make('fname')->label('first name'),
+                                TextEntry::make('lname')->label('Last name'),
+                                TextEntry::make('region_name'),
+                                TextEntry::make('district_name'),
+                            ])->columns(3),
+                        Fieldset::make('')
+                            ->schema([
+                                TextEntry::make('district_name'),
+                                TextEntry::make('category_name'),
+                            ])->columns(2),
+                    ])
             ]);
     }
     public static function getPages(): array

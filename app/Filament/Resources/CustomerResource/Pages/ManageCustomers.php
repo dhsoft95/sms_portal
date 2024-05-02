@@ -16,7 +16,7 @@ class ManageCustomers extends ManageRecords
     {
         return [
             \EightyNine\ExcelImport\ExcelImportAction::make()
-                ->color("primary"),
+                ->color("success")->requiresConfirmation(),
             Actions\CreateAction::make(),
 //            ImportAction::make()
 //                ->importer(CustomerImporter::class)

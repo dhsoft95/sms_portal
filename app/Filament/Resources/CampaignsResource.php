@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CampaignsResource\Pages;
 use App\Filament\Resources\CampaignsResource\RelationManagers;
-use App\Models\Campaigns;
+use App\Models\campaigns;
 use App\Models\categories;
 use App\Models\districts;
 use App\Models\Region;
@@ -29,9 +29,18 @@ use Tapp\FilamentTimezoneField\Forms\Components\TimezoneSelect;
 
 class CampaignsResource extends Resource
 {
-    protected static ?string $model = Campaigns::class;
+    protected static ?string $model = campaigns::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+
+
+    protected static ?string $navigationGroup = 'Operations';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+
 
     public static function form(Form $form): Form
     {
@@ -40,9 +49,10 @@ class CampaignsResource extends Resource
         $campaign_code = 'SMS-' . $currentYear . '-' . str_pad($campaign_code, 3, '0', STR_PAD_LEFT);
         return $form
             ->schema([
+
                 Section::make('Heading')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        Forms\Components\TextInput::make('name') ->live(onBlur: true)
                             ->required()
                             ->maxLength(255),
                         Select::make('template_id')
@@ -51,23 +61,21 @@ class CampaignsResource extends Resource
                             ->searchable(),
                         Select::make('region_name')
                             ->label('Region')->live()->preload()
-                            ->options(Region::all()->pluck('name', 'name')) // Assuming your model is named 'District'
+                            ->options(Region::all()->pluck('name', 'name'))
                             ->searchable()
                             ->afterStateUpdated(fn(Set $set)=>$set('district_name',null)),
+                        Select::make('district_name')->label('District')
+                            ->options(fn (Get $get): Collection => districts::query()
+                                ->where('region_name', $get('region_name'))
+                                ->pluck('name', 'name')),
                         Select::make('category_name')
                             ->label('Category')
                             ->options(categories::all()->pluck('name', 'name'))
-                            ->searchable(),
-                        Select::make('district_name')->searchable()->label('District')
-                            ->options(fn ($get) => districts::where('region_name', $get('region_name'))
-                                ->pluck('name', 'name'))->live()->preload(),
-
+                            ->searchable() ->live(onBlur: true),
                         Forms\Components\Toggle::make('is_scheduled'),
+
                     ])
                     ->columns(3),
-
-
-
 
                          Section::make('Scheduled')
                              ->id('scheduled-section') // Add an ID to the section for targeting in JavaScript
@@ -84,7 +92,7 @@ class CampaignsResource extends Resource
                                          'One_time' => 'One time',
                                          'Daily' => 'Daily',
                                          'Monthly' => 'Monthly',
-                                     ])
+                                     ]) ->live(onBlur: true)
                              ])
                              ->collapsible()
                              ->compact()
@@ -145,7 +153,7 @@ class CampaignsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+//                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
