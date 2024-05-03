@@ -11,6 +11,10 @@ class templates extends Model
 
     protected $fillable = ['name', 'content'];
 
+    protected $casts = [
+        'tags' => 'array',
+    ];
+
     public function campaigns(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(campaigns::class);

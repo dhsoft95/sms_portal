@@ -10,6 +10,7 @@ use App\Models\districts;
 use App\Models\Region;
 use App\Models\templates;
 use Filament\Forms;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -72,12 +73,11 @@ class CampaignsResource extends Resource
                             ->label('Category')
                             ->options(categories::all()->pluck('name', 'name'))
                             ->searchable() ->live(onBlur: true),
-                        Forms\Components\Toggle::make('is_scheduled'),
-
+                        Forms\Components\Toggle::make('is_scheduled')->label('Schedule')->live(),
                     ])
                     ->columns(3),
 
-                         Section::make('Scheduled')
+                         Section::make('Scheduled')->hidden(fn (Get $get): bool => ! $get('is_scheduled'))
                              ->id('scheduled-section') // Add an ID to the section for targeting in JavaScript
                              ->headerActions([
                              ])

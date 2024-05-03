@@ -134,7 +134,8 @@ class campaigns extends Model
             $firstName = $customer ? $customer->fname : '';
             $lastName = $customer ? $customer->lname : '';
 
-            $finalMessage = "$message"; // Concatenate message here
+//            $finalMessage = "$message";
+            $finalMessage = str_replace(['{', '}'], '', $message);
 
             $requestData = [
                 'recipient' => $phone,

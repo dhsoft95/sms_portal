@@ -3,10 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TemplatesResource\Pages;
-use App\Filament\Resources\TemplatesResource\RelationManagers;
+//use App\Filament\Resources\TemplatesResource\RelationManagers;
 use App\Models\Templates;
 use Filament\Forms;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -27,9 +29,31 @@ class TemplatesResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('content')
+                Forms\Components\Select::make('Tags')
+                    ->label('Available Tag')
+                    ->searchable()
+                    ->afterStateUpdated(function (Set $set, $state) {
+                        $set('content', '{'.$state.'}');
+                    })
+                    ->reactive()
+                    ->preload()
+                    ->options([
+                        'promotional' => 'Promotional',
+                        'transactional' => 'Transactional',
+                        'reminder' => 'Reminder',
+                        'event' => 'Event',
+                        'survey' => 'Survey',
+                        'update' => 'Update',
+                        'welcome' => 'Welcome',
+                        'alert' => 'Alert',
+                        'feedback' => 'Feedback',
+                        'educational' => 'Educational',
+                    ]),
+
+                Forms\Components\Textarea::class::make('content')
                     ->required()
                     ->columnSpanFull(),
+
             ]);
     }
 
@@ -56,6 +80,7 @@ class TemplatesResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -64,20 +89,10 @@ class TemplatesResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTemplates::route('/'),
-            'create' => Pages\CreateTemplates::route('/create'),
-            'view' => Pages\ViewTemplates::route('/{record}'),
-            'edit' => Pages\EditTemplates::route('/{record}/edit'),
+            'index' => Pages\ManageTemplates::route('/'),
         ];
     }
 }
