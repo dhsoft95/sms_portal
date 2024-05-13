@@ -130,7 +130,7 @@ class campaigns extends Model
         Log::info('SMS API URL: ' . env('SMS_API_URL'));
 
         try {
-            $customer = Customer::where('phone', $phone)->first();
+            $customer = customer::where('phone', $phone)->first();
             $firstName = $customer ? $customer->fname : '';
             $lastName = $customer ? $customer->lname : '';
 
@@ -139,7 +139,7 @@ class campaigns extends Model
 
             $requestData = [
                 'recipient' => $phone,
-                'sender_id' => 'Info',
+                'sender_id' => 'YamahaTZ',
                 'message' => $finalMessage,
             ];
 

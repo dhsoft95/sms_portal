@@ -68,6 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 SmsChart::class
             ])->plugins([
 //                FilamentAccessControlPlugin::make(),
+//                FilamentAccessControlPlugin::make(),
                 FilamentBackgroundsPlugin::make() ->showAttribution(false)->remember(100),
                 FilamentLaravelLogPlugin::make()
                     ->navigationGroup('System Tools')

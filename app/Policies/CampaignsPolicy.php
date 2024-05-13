@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\campaigns;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CampaignsPolicy
+class campaignsPolicy
 {
     use HandlesAuthorization;
 
