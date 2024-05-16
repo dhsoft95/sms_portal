@@ -15,9 +15,9 @@ class ManageCustomers extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            \EightyNine\ExcelImport\ExcelImportAction::make()
-                ->color("success")->requiresConfirmation(),
-            Actions\CreateAction::make(),
+//            \EightyNine\ExcelImport\ExcelImportAction::make()
+//                ->color("success")->requiresConfirmation(),
+//            Actions\CreateAction::make(),
            ImportAction::make()
                ->importer(CustomerImporter::class)
         ];

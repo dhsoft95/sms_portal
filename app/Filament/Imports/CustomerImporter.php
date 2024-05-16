@@ -15,17 +15,19 @@ class CustomerImporter extends Importer
     {
         return [
             ImportColumn::make('fname')
-                ->requiredMapping()->label('First Name')
+                ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('lname')->label('Last Name')
+            ImportColumn::make('lname')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('phone')
-                ->requiredMapping()->label('Phone Number')
+                ->requiredMapping()
                 ->rules(['required', 'max:255']),
+            ImportColumn::make('category_name')
+                ->rules(['max:255']),
             ImportColumn::make('district_name')
-                ->rules(['max:255'])->label('District Name'),
-            ImportColumn::make('Category Name')
+                ->rules(['max:255']),
+            ImportColumn::make('region_name')
                 ->rules(['max:255']),
         ];
     }
