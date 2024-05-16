@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TemplatesResource\Pages;
 //use App\Filament\Resources\TemplatesResource\RelationManagers;
-use App\Models\Templates;
+use App\Models\templates;
 use Filament\Forms;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Form;
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TemplatesResource extends Resource
 {
-    protected static ?string $model = Templates::class;
+    protected static ?string $model = templates::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
     protected static ?string $navigationGroup = 'Operations';
