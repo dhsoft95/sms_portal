@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DistrictsResource\Pages;
 use App\Filament\Resources\DistrictsResource\RelationManagers;
-use App\Models\Districts;
+use App\Models\districts;
 use App\Models\Region;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DistrictsResource extends Resource
 {
-    protected static ?string $model = Districts::class;
+    protected static ?string $model = districts::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-americas';
     protected static ?int $navigationSort = 2;

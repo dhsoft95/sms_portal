@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers;
 use App\Models\categories;
-use App\Models\Customer;
+use App\Models\customer;
 use App\Models\districts;
 use App\Models\Region;
 use Filament\Forms;
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomerResource extends Resource
 {
-    protected static ?string $model = Customer::class;
+    protected static ?string $model = customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationGroup = 'Management';
