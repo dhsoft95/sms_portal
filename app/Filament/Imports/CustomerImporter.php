@@ -2,14 +2,14 @@
 
 namespace App\Filament\Imports;
 
-use App\Models\Customer;
+use App\Models\customer;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 
 class CustomerImporter extends Importer
 {
-    protected static ?string $model = Customer::class;
+    protected static ?string $model = customer::class;
 
     public static function getColumns(): array
     {
@@ -30,14 +30,14 @@ class CustomerImporter extends Importer
         ];
     }
 
-    public function resolveRecord(): ?Customer
+    public function resolveRecord(): ?customer
     {
         // return Customer::firstOrNew([
         //     // Update existing records, matching them by `$this->data['column_name']`
         //     'email' => $this->data['email'],
         // ]);
 
-        return new Customer();
+        return new customer();
     }
 
     public static function getCompletedNotificationBody(Import $import): string
