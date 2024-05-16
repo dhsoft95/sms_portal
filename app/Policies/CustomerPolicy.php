@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Customer;
+use App\Models\customer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CustomerPolicy
+class customerPolicy
 {
     use HandlesAuthorization;
 
@@ -21,7 +21,7 @@ class CustomerPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Customer $customer): bool
+    public function view(User $user, customer $customer): bool
     {
         return $user->can('view_customer');
     }
@@ -37,7 +37,7 @@ class CustomerPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Customer $customer): bool
+    public function update(User $user, customer $customer): bool
     {
         return $user->can('update_customer');
     }
@@ -45,7 +45,7 @@ class CustomerPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Customer $customer): bool
+    public function delete(User $user, customer $customer): bool
     {
         return $user->can('delete_customer');
     }
@@ -61,7 +61,7 @@ class CustomerPolicy
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Customer $customer): bool
+    public function forceDelete(User $user, customer $customer): bool
     {
         return $user->can('force_delete_customer');
     }
@@ -77,7 +77,7 @@ class CustomerPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Customer $customer): bool
+    public function restore(User $user, customer $customer): bool
     {
         return $user->can('restore_customer');
     }
@@ -93,7 +93,7 @@ class CustomerPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Customer $customer): bool
+    public function replicate(User $user, customer $customer): bool
     {
         return $user->can('replicate_customer');
     }

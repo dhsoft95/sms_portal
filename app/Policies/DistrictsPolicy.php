@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Districts;
+use App\Models\districts;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DistrictsPolicy
+class districtsPolicy
 {
     use HandlesAuthorization;
 
@@ -21,7 +21,7 @@ class DistrictsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Districts $districts): bool
+    public function view(User $user, districts $districts): bool
     {
         return $user->can('view_districts');
     }
@@ -37,7 +37,7 @@ class DistrictsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Districts $districts): bool
+    public function update(User $user, districts $districts): bool
     {
         return $user->can('update_districts');
     }
@@ -45,7 +45,7 @@ class DistrictsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Districts $districts): bool
+    public function delete(User $user, districts $districts): bool
     {
         return $user->can('delete_districts');
     }
@@ -61,7 +61,7 @@ class DistrictsPolicy
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Districts $districts): bool
+    public function forceDelete(User $user, districts $districts): bool
     {
         return $user->can('force_delete_districts');
     }
@@ -77,7 +77,7 @@ class DistrictsPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Districts $districts): bool
+    public function restore(User $user, districts $districts): bool
     {
         return $user->can('restore_districts');
     }
@@ -93,7 +93,7 @@ class DistrictsPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Districts $districts): bool
+    public function replicate(User $user, districts $districts): bool
     {
         return $user->can('replicate_districts');
     }

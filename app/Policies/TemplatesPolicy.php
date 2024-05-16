@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Templates;
+use App\Models\templates;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TemplatesPolicy
+class templatesPolicy
 {
     use HandlesAuthorization;
 
@@ -21,7 +21,7 @@ class TemplatesPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Templates $templates): bool
+    public function view(User $user, templates $templates): bool
     {
         return $user->can('view_templates');
     }
@@ -37,7 +37,7 @@ class TemplatesPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Templates $templates): bool
+    public function update(User $user, templates $templates): bool
     {
         return $user->can('update_templates');
     }
@@ -45,7 +45,7 @@ class TemplatesPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Templates $templates): bool
+    public function delete(User $user, templates $templates): bool
     {
         return $user->can('delete_templates');
     }
@@ -61,7 +61,7 @@ class TemplatesPolicy
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Templates $templates): bool
+    public function forceDelete(User $user, templates $templates): bool
     {
         return $user->can('force_delete_templates');
     }
@@ -77,7 +77,7 @@ class TemplatesPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Templates $templates): bool
+    public function restore(User $user, templates $templates): bool
     {
         return $user->can('restore_templates');
     }
@@ -93,7 +93,7 @@ class TemplatesPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Templates $templates): bool
+    public function replicate(User $user, templates $templates): bool
     {
         return $user->can('replicate_templates');
     }
